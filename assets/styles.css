@@ -1,0 +1,21 @@
+
+:root{
+  --purple-1:#2b0b3a;
+  --purple-2:#4c1d95;
+}
+body{background-image: radial-gradient(circle at 10% 10%, rgba(76,29,149,0.06), transparent 10%), radial-gradient(circle at 90% 90%, rgba(43,11,58,0.05), transparent 10%);} 
+.envelope .front{transition:transform .45s ease;}
+.envelope.open .front{transform:translateY(-18px) rotateX(12deg);}
+.envelope .inside{transition:opacity .4s ease}
+
+/* star styles (in estrelas) */
+.star{position:absolute; width:12px; height:12px; border-radius:50%; box-shadow:0 0 10px rgba(124,58,237,0.9);}
+
+/* gift animation */
+#gift .box.open{transform:translateY(-24px) scale(1.02) rotateX(12deg);} 
+
+/* modal styles for index */
+#modal .hidden{display:none}
+
+/* small responsive tweaks */
+@media (max-width:640px){ .envelope .front{padding:6px} }
