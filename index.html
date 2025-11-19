@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Timeline - Nosso Amor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="bg-[#07030a] text-gray-200 font-sans">
+
+<nav class="p-4 flex gap-3">
+  <a href="index.html" class="bg-purple-700 px-3 py-1 rounded text-white">História</a>
+  <a href="cartas.html" class="hover:bg-purple-800 px-3 py-1 rounded">Cartas</a>
+  <a href="presente.html" class="hover:bg-purple-800 px-3 py-1 rounded">Presente</a>
+  <a href="jogo.html" class="hover:bg-purple-800 px-3 py-1 rounded">Jogo</a>
+</nav>
+
+<main class="max-w-4xl mx-auto p-6">
+  <h1 class="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-purple-700">Nossa História</h1>
+  <p class="text-center mt-2 text-gray-300">Clique em um marco para ver a lembrança.</p>
+
+  <div class="grid gap-6 mt-8">
+    <article class="p-6 rounded-2xl bg-gradient-to-b from-[#0b0520] to-[#0f0828] border border-purple-800 cursor-pointer" data-index="0">
+      <h2 class="text-2xl font-bold">Primeiro encontro 🤍</h2>
+      <p class="mt-2 opacity-80">Ahh, nosso primeiro encontro oficial foi engraçado… uma pequena conversa na academia. Eu mal sabia que te amaria tanto, meu amor.</p>
+    </article>
+    <article class="p-6 rounded-2xl bg-gradient-to-b from-[#0b0520] to-[#0f0828] border border-purple-800 cursor-pointer" data-index="1">
+      <h2 class="text-2xl font-bold">Primeiro beijo ❤️</h2>
+      <p class="mt-2 opacity-80">kkkkkkk Nosso primeiro beijo foi logo após o nosso primeiro encontro… uma batidinha de dente para deixar o momento inesquecível. Vida, que saudade de você… estou quase ficando louco de tanta saudade.</p>
+    </article>
+    <article class="p-6 rounded-2xl bg-gradient-to-b from-[#0b0520] to-[#0f0828] border border-purple-800 cursor-pointer" data-index="2">
+      <h2 class="text-2xl font-bold">Viagem para a sua casa ❤️‍🔥</h2>
+      <p class="mt-2 opacity-80">Foi uma das melhores coisas que já fiz, meu amor. Foi incrível cada momento ao seu lado, todas as risadas e a nossa transa louca que não tinha hora certa. Meu amor, estou contando os dias para estar ao seu lado… falta menos de um mês e já está insuportável esperar.</p>
+    </article>
+  </div>
+</main>
+
+<div id="modalWrap" class="modal-backdrop hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+  <div class="max-w-2xl w-full rounded-2xl p-6 bg-[#0b0a12] border border-purple-700">
+    <div class="flex justify-between items-start">
+      <h3 id="modalTitle" class="text-2xl font-bold"></h3>
+      <button id="closeModal" class="text-sm opacity-60">Fechar ✖</button>
+    </div>
+    <p id="modalText" class="mt-4 opacity-80"></p>
+  </div>
+</div>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

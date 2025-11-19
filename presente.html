@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Presente Especial</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+/* Partículas mágicas */
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+}
+
+.animate-float {
+  animation: floatUp 3s ease-out forwards;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 10px #d8b4fe, 0 0 20px #a855f7; }
+  50% { box-shadow: 0 0 25px #f0abfc, 0 0 40px #9333ea; }
+}
+
+.animate-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+<body class="bg-[#07030a] text-gray-200 font-sans overflow-hidden">
+
+<nav class="p-4 flex gap-3 z-50 relative">
+  <a href="index.html" class="hover:bg-purple-800 px-3 py-1 rounded">História</a>
+  <a href="cartas.html" class="hover:bg-purple-800 px-3 py-1 rounded">Cartas</a>
+  <a href="presente.html" class="bg-purple-700 px-3 py-1 rounded text-white">Presente</a>
+  <a href="jogo.html" class="hover:bg-purple-800 px-3 py-1 rounded">Jogo</a>
+</nav>
+
+<main class="w-full h-screen flex flex-col items-center justify-center relative">
+
+  <h1 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-purple-700">
+    Feliz 1 Ano de Namoro meu amorrrrrr 💜
+  </h1>
+
+  <!-- Caixa do presente -->
+  <div class="gift w-48 h-48 bg-purple-700 rounded-lg flex items-center justify-center cursor-pointer animate-glow hover:scale-105 transition-transform relative z-10">
+    <span class="text-white font-bold text-2xl">🎁</span>
+  </div>
+
+</main>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

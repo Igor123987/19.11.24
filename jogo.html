@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<title>Mini Game do Amor 💖</title>
+
+<body>
+  <nav class="p-4 flex gap-3">
+  <a href="index.html" class="hover:bg-purple-800 px-3 py-1 rounded">História</a>
+  <a href="cartas.html" class="hover:bg-purple-800 px-3 py-1 rounded">Cartas</a>
+  <a href="presente.html" class="hover:bg-purple-800 px-3 py-1 rounded">Presente</a>
+  <a href="jogo.html" class="hover:bg-purple-800 px-3 py-1 rounded">Jogo</a>
+  <a href="jogo.html" class="hover:bg-purple-800 px-3 py-1 rounded">Jogo</a>
+</nav>
+</body>
+
+<style>
+
+body {
+  margin:0; font-family:sans-serif; background:#0b0520; color:white; display:flex; flex-direction:column; align-items:center;
+}
+
+
+
+h1 { text-align:center; margin:10px; font-size:24px; }
+#maze { display:grid; grid-gap:2px; margin:10px auto; touch-action: none; }
+.cell { display:flex; align-items:center; justify-content:center; transition:0.2s; border-radius:4px; }
+.wall { background:#4c0965; }
+.path { background:#9d4edd; }
+.player { background:#f9c74f; border-radius:50%; animation:heartbeat 1s infinite; display:flex; align-items:center; justify-content:center; color:#0b0520; font-weight:bold; }
+.exit { background:limegreen; font-weight:bold; display:flex; align-items:center; justify-content:center; color:#0b0520; }
+@keyframes heartbeat {0%,100%{transform:scale(1);}50%{transform:scale(1.3);} }
+
+#questionModal, #finalModal {
+  position:fixed; inset:0; background:rgba(0,0,0,0.95);
+  display:none; justify-content:center; align-items:center; flex-direction:column; text-align:center; z-index:1000; padding:20px; font-size:18px;
+}
+#questionModal button, #finalModal button { margin:5px; padding:10px 15px; border:none; border-radius:10px; font-size:16px; cursor:pointer; }
+#backBtn { background:#f87171; color:white; margin-top:15px; }
+.control-buttons { display:flex; gap:10px; margin:10px; flex-wrap:wrap; justify-content:center; }
+.control-buttons button { padding:15px 20px; font-size:20px; border:none; border-radius:10px; background:#7c3aed; color:white; cursor:pointer; flex:1; min-width:60px; }
+</style>
+</head>
+<body>
+
+<h1>Mini Game do Amor 💖</h1>
+<div id="maze"></div>
+<div class="control-buttons">
+  <button onclick="move(0,-1)">⬆️</button>
+  <button onclick="move(-1,0)">⬅️</button>
+  <button onclick="move(1,0)">➡️</button>
+  <button onclick="move(0,1)">⬇️</button>
+</div>
+
+<div id="questionModal">
+  <p id="questionText"></p>
+  <div id="answerButtons"></div>
+  <button id="backBtn">Voltar</button>
+</div>
+
+<div id="finalModal">
+  🎉 Parabéns! Você saiu de todos os labirintos!<br>
+  Sua senha: <strong>19.11.24</strong> 💘<br>
+  <button onclick="restartGame()">Voltar ao início</button>
+</div>
+
+<script>
+// ===== Labirintos =====
+const phases = [
+  {maze:[[0,1,1,1,1,1,1,1,1,1,1,0],[0,0,0,0,0,0,1,0,0,0,1,0],[1,1,1,1,0,0,1,0,1,0,1,0],[0,0,0,1,0,1,1,0,1,0,0,0],[0,1,0,1,0,1,0,0,1,1,1,0],[0,1,0,0,0,1,0,1,0,0,0,0],[0,1,1,1,0,1,0,1,0,1,1,0],[0,0,0,1,0,0,0,1,0,0,0,0],[1,1,0,1,1,1,0,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0]],start:{x:0,y:0},exit:{x:11,y:11},question:{ text:"Quando foi nosso primeiro beijo?", options:["2024-10-11","2023-05-20","2024-10-16"], correct:2 }},
+  {maze:[[0,1,1,1,1,1,1,1,1,1,1,0],[0,0,0,0,1,0,0,0,1,0,0,0],[1,1,1,0,1,0,1,0,1,0,1,0],[0,0,1,0,0,0,1,0,0,0,1,0],[0,1,1,1,1,0,1,1,1,0,1,0],[0,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,0,1,1,1,0],[0,0,0,0,0,0,1,0,0,0,0,0],[0,1,1,1,1,0,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0]],start:{x:0,y:0},exit:{x:11,y:11},question:{ text:"Qual foi nossa primeira viagem juntos?", options:["Coreia","Paris","Brasil"], correct:0 }},
+  {maze:[[0,1,1,0,0,0,1,1,0,1,0,0],[0,0,1,0,1,0,0,0,0,1,1,0],[1,0,1,1,1,1,1,1,0,0,0,0],[1,0,0,0,0,0,0,1,1,1,1,0],[0,1,1,1,1,1,0,0,0,0,1,0],[0,0,0,0,0,1,0,1,1,0,0,0],[1,1,0,1,0,0,0,0,0,1,1,0],[0,0,0,0,1,1,1,0,0,0,0,0],[0,1,1,0,0,0,0,1,1,1,0,0],[0,0,0,0,1,1,0,0,0,0,0,0],[1,1,0,1,0,0,1,1,0,1,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],start:{x:0,y:0},exit:{x:11,y:11},question:{ text:"Qual música marcou nosso início?", options:["realidade ou fantasia","Entregador de flores","LoveStory"], correct:1 }},
+  {maze:[[0,1,1,0,1,0,0,0,1,1,0,0],[0,0,1,0,1,0,1,1,0,0,0,0],[1,0,1,0,0,0,1,0,1,1,1,0],[1,0,1,1,1,0,0,0,0,0,1,0],[0,0,0,0,1,1,1,1,0,0,1,0],[0,1,1,0,0,0,0,1,0,0,0,0],[0,0,0,0,1,1,0,0,1,1,1,0],[1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,0,0,0,0,0],[0,1,1,1,0,0,0,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0]],start:{x:0,y:0},exit:{x:11,y:11},question:{ text:"Qual é o nosso apelido especial?", options:["Zero foco","Amorzinho","Vida"], correct:0 }},
+  {maze:[[0,0,1,0,1,0,0,0,1,0,0,0],[1,0,1,0,1,0,1,0,0,1,1,0],[0,0,0,0,0,0,1,0,1,0,0,0],[1,1,1,1,1,0,0,0,0,1,1,0],[0,0,0,0,1,1,0,1,1,0,0,0],[0,1,1,0,0,0,0,0,1,1,1,0],[0,0,0,1,1,1,1,0,0,0,0,0],[1,1,0,0,0,0,1,1,1,0,1,0],[0,0,0,1,1,0,0,0,0,0,0,0],[0,1,1,0,0,0,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,0,0,0,0,0,0]],start:{x:0,y:0},exit:{x:11,y:11}} // última fase sem pergunta
+];
+
+let currentPhase = 0;
+let mazeData = [];
+let playerPos = {};
+let rows, cols;
+const mazeEl = document.getElementById('maze');
+const questionModal = document.getElementById('questionModal');
+const finalModal = document.getElementById('finalModal');
+const questionText = document.getElementById('questionText');
+const answerButtons = document.getElementById('answerButtons');
+const backBtn = document.getElementById('backBtn');
+
+// ===== Inicialização =====
+function initPhase(){
+  mazeEl.innerHTML='';
+  mazeData = phases[currentPhase].maze;
+  rows = mazeData.length;
+  cols = mazeData[0].length;
+  mazeEl.style.gridTemplateColumns=`repeat(${cols}, calc(90vw/${cols}))`;
+  playerPos = {...phases[currentPhase].start};
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const div = document.createElement('div');
+      div.className = mazeData[r][c]===1?'cell wall':'cell path';
+      div.style.width=`calc(90vw/${cols})`;
+      div.style.height=`calc(90vw/${cols})`;
+      if(r===playerPos.y && c===playerPos.x) div.classList.add('player');
+      if(phases[currentPhase].exit && r===phases[currentPhase].exit.y && c===phases[currentPhase].exit.x) div.classList.add('exit');
+      div.id=`cell-${r}-${c}`;
+      mazeEl.appendChild(div);
+    }
+  }
+}
+initPhase();
+
+// ===== Movimento =====
+function move(dx,dy){
+  const nx = playerPos.x + dx;
+  const ny = playerPos.y + dy;
+  if(nx>=0 && nx<cols && ny>=0 && ny<rows && mazeData[ny][nx]===0){
+    document.getElementById(`cell-${playerPos.y}-${playerPos.x}`).classList.remove('player');
+    playerPos = {x:nx,y:ny};
+    document.getElementById(`cell-${ny}-${nx}`).classList.add('player');
+    checkExit();
+  }
+}
+
+// ===== Checa saída =====
+function checkExit(){
+  const exit = phases[currentPhase].exit;
+  if(exit && playerPos.x===exit.x && playerPos.y===exit.y){
+    if(phases[currentPhase].question){
+      showQuestion(phases[currentPhase].question);
+    } else {
+      if(currentPhase<phases.length-1){
+        currentPhase++;
+        initPhase();
+      } else {
+        finalModal.style.display='flex';
+      }
+    }
+  }
+}
+
+// ===== Perguntas =====
+function showQuestion(q){
+  questionText.innerText = q.text;
+  answerButtons.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.innerText = opt;
+    btn.onclick = ()=>{
+      if(i===q.correct){
+        questionModal.style.display='none';
+        currentPhase++;
+        initPhase();
+      } else alert('Resposta incorreta!');
+    };
+    answerButtons.appendChild(btn);
+  });
+  questionModal.style.display='flex';
+}
+backBtn.onclick=()=>{ questionModal.style.display='none'; initPhase(); }
+
+// ===== Teclado =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'||e.key==='w') move(0,-1);
+  if(e.key==='ArrowDown'||e.key==='s') move(0,1);
+  if(e.key==='ArrowLeft'||e.key==='a') move(-1,0);
+  if(e.key==='ArrowRight'||e.key==='d') move(1,0);
+});
+
+// ===== Reiniciar =====
+function restartGame(){
+  currentPhase=0;
+  finalModal.style.display='none';
+  initPhase();
+}
+</script>
+</body>
+</html>
